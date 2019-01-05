@@ -20,15 +20,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
-        AlunoDAO dao = new AlunoDAO(this);
-        List<Aluno> alunos = dao.buscaAlunos();
-        dao.close();
-
-        //String[] alunos = {"Rafael","Daniel","George Paiva","Eric Castelo","Elyfran Vaz","Marcelo Bastos","Efrain Gentil","Tatiana Castelo","Nilton Junior","Thiago Freitas","Teste 1","Teste 2","Teste 3","Sr Paixão"};
-        ListView listaAlunos = findViewById(R.id.lista_alunos);
-        ArrayAdapter<Aluno> adapter =  new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
-        listaAlunos.setAdapter(adapter);
-
         Button novoAluno = findViewById(R.id.button);
         novoAluno.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,7 +28,22 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 startActivity(vaiProFormulario);
             }
         });
+    }
 
+    private void carregaLista() {
+        AlunoDAO dao = new AlunoDAO(this);
+        List<Aluno> alunos = dao.buscaAlunos();
+        dao.close();
+
+        ListView listaAlunos = findViewById(R.id.lista_alunos);
+        ArrayAdapter<Aluno> adapter =  new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
+        listaAlunos.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregaLista();
 
     }
 }
